@@ -1,0 +1,113 @@
+[gd_scene load_steps=12 format=3 uid="uid://djabrh1x2b8m2"]
+
+[ext_resource type="Texture2D" uid="uid://c4f07htwfgd0u" path="res://art/trap-door.png" id="1_vrg4u"]
+[ext_resource type="Script" uid="uid://tc5tqhlt6fne" path="res://scripts/trap_door_manager.gd" id="1_xv13g"]
+[ext_resource type="Script" uid="uid://bko25bnckp2h6" path="res://scripts/TrapDoor.gd" id="2_6ledq"]
+[ext_resource type="Script" uid="uid://8jorx6jilr87" path="res://scripts/TrapdoorChecker.gd" id="4_ma562"]
+[ext_resource type="Script" uid="uid://bl47jlfte138i" path="res://scripts/trapdoor_closing_area.gd" id="5_ma562"]
+
+[sub_resource type="Animation" id="Animation_3e3k6"]
+resource_name = "trap_door_open"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.02, 0.04, 0.06, 0.08),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="Animation" id="Animation_ma562"]
+resource_name = "trap_door_close"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.02, 0.04, 0.06, 0.08),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [4, 3, 2, 1, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tryrw"]
+_data = {
+&"trap_door_close": SubResource("Animation_ma562"),
+&"trap_door_open": SubResource("Animation_3e3k6")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bn4bi"]
+size = Vector2(19.5122, 9.68847)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6ledq"]
+size = Vector2(32, 7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_10nqb"]
+size = Vector2(32, 27)
+
+[node name="TrapDoor" type="Node2D"]
+script = ExtResource("1_xv13g")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(16, 0)
+texture = ExtResource("1_vrg4u")
+hframes = 5
+
+[node name="Hint" type="Label" parent="Sprite2D"]
+unique_name_in_owner = true
+z_index = 30
+offset_left = -73.0
+offset_top = -126.0
+offset_right = 71.0
+offset_bottom = -77.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+text = "Press Space to 
+open the trapdoor"
+horizontal_alignment = 1
+
+[node name="TrapdoorAnimation" type="AnimationPlayer" parent="Sprite2D"]
+unique_name_in_owner = true
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_tryrw")
+}
+
+[node name="ClickArea" type="Area2D" parent="Sprite2D"]
+unique_name_in_owner = true
+position = Vector2(0, -45)
+script = ExtResource("2_6ledq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/ClickArea"]
+position = Vector2(0, -21)
+scale = Vector2(1.64, 12.84)
+shape = SubResource("RectangleShape2D_bn4bi")
+
+[node name="trapdoorarea" type="Area2D" parent="Sprite2D"]
+unique_name_in_owner = true
+script = ExtResource("4_ma562")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/trapdoorarea"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_6ledq")
+
+[node name="closingArea" type="Area2D" parent="Sprite2D"]
+unique_name_in_owner = true
+position = Vector2(0, 17)
+script = ExtResource("5_ma562")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/closingArea"]
+position = Vector2(0, 29)
+shape = SubResource("RectangleShape2D_10nqb")
+
+[connection signal="body_entered" from="Sprite2D/ClickArea" to="Sprite2D/ClickArea" method="_on_body_entered"]
+[connection signal="body_exited" from="Sprite2D/ClickArea" to="Sprite2D/ClickArea" method="_on_body_exited"]
+[connection signal="body_entered" from="Sprite2D/trapdoorarea" to="Sprite2D/trapdoorarea" method="_on_body_entered"]
+[connection signal="body_entered" from="Sprite2D/closingArea" to="Sprite2D/closingArea" method="_on_body_entered"]
