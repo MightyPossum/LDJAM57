@@ -29,7 +29,6 @@ func lose_game() -> void:
 	game_over = true
 	print("Game Over")
 	GLOBAL.HUD.enable_retry_text()
-	%Audio.play()
 
 func _input(_event):
 	if Input.is_action_just_released("retry"):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://dd74js0myad6u"]
+[gd_scene load_steps=15 format=4 uid="uid://dd74js0myad6u"]
 
 [ext_resource type="Texture2D" uid="uid://de3yn704ckd5a" path="res://art/walls.png" id="1_40k76"]
 [ext_resource type="Script" uid="uid://d4ed3e1xj804w" path="res://scripts/gamemanager.gd" id="1_q85tm"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://djabrh1x2b8m2" path="res://scenes/trap_door.tscn" id="3_xkbh3"]
 [ext_resource type="Script" uid="uid://fcnv45foxism" path="res://scripts/transporter_area.gd" id="5_fwly5"]
 [ext_resource type="Script" uid="uid://b2cd8b8vkdglu" path="res://scripts/HUD.gd" id="7_mulil"]
-[ext_resource type="AudioStream" uid="uid://dglspj1ye8bw5" path="res://Audio/Wilhelm 1.wav" id="8_7cfj2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_q85tm"]
 texture = ExtResource("1_40k76")
@@ -151,9 +150,5 @@ text = "You died.
 Press \"r\" to try again"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Audio" type="AudioStreamPlayer2D" parent="."]
-unique_name_in_owner = true
-stream = ExtResource("8_7cfj2")
 
 [connection signal="body_entered" from="TransporterArea" to="." method="_on_transporter_area_body_entered"]
